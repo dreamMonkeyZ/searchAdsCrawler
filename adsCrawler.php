@@ -928,7 +928,10 @@ class Cron_AdsCrawler_Controller
         $insert_sql .= $value_sql;
         $res = $this->dbhw->query($insert_sql);
         if(!$res){
-            print_r($this->dbhw->error());
+            do{
+                print_r($this->dbhw->error());
+                $this->dbhw->connect();
+            }while(!($this->dbhw->query($insert_sql)));
         }else{
             echo "数据插入成功~~~";
         }

@@ -2,9 +2,19 @@
 class Mysql
 {
     private $conn;
+    private $host;
+    private $user;
+    private $password;
     public function __construct($host, $user, $password)
     {
-        $this->conn = mysql_connect($host, $user, $password);
+        $this->host = $host;
+        $this->user = $user;
+        $this->password = $password;
+        $this->connect();
+    }
+
+    public function connect(){
+        $this->conn = mysql_connect($this->host, $this->user, $this->password);
         mysql_select_db( 'azazie' );
     }
 
