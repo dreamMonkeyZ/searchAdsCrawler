@@ -54,10 +54,16 @@ class Cron_AdsCrawler_Controller
     private $param;
 
 
+    private $currentDate;	
+
+
     function __construct($param)
     {
         $this->dbhw = new Mysql("localhost:3306", "dbuser0114", "dbpswd0114");
+	
+	date_default_timezone_set("America/Los_Angeles");
 
+	$this->currentDate  = date('Y-m-d');
 
         $this->param = $param;
         $this->crawlerType = $param[3];
@@ -72,8 +78,8 @@ class Cron_AdsCrawler_Controller
             // 爬取数据之前，进行基础数据结构的初始化
             $this->initCrawler();
             // 汇总数据之前, 进行基础数据结构的初始化
-            $this->initSummary();
         }
+	$this->initSummary();
     }
 
     function indexAction()
@@ -230,7 +236,7 @@ class Cron_AdsCrawler_Controller
 
         // daily 30天数据
         for($interval = 0; $interval <= 29; $interval++){
-            $day = date("Y-m-d",strtotime("-{$interval} day"));
+            $day = date("Y-m-d",strtotime("-{$interval} day",strtotime($this->currentDate)));
             $dailyDayField[] = $day;
             $adsDayData[$day] = '';
             $plaDayData[$day] = '';
@@ -238,7 +244,7 @@ class Cron_AdsCrawler_Controller
 
         //score 7天数据
         for($interval = 0; $interval <= 6; $interval++){
-            $day = date("Y-m-d",strtotime("-{$interval} day"));
+            $day = date("Y-m-d",strtotime("-{$interval} day",strtotime($this->currentDate)));
             $scoreDayFiled[] = $day;
             $scoreDayData[$day] = '';
         }
@@ -330,6 +336,7 @@ class Cron_AdsCrawler_Controller
         echo "脚本start，时间：" . date('Y-m-d H:i:s') . ", 小时 ：{$this->hour}" . PHP_EOL;
         if($this->crawlerType == 'google'){
             $this->crawlerGoogleData();
+  	     $this->summaryAction();
         }elseif($this->crawlerType == 'bing'){
             $this->crawlerBingData();
         }
@@ -355,12 +362,22 @@ class Cron_AdsCrawler_Controller
         $this->setDetailData();
         $this->setDailyAndScoreData();
         $html = $this->makeupHtml();
-        send_mail($this->email_reciever, $html, '', 'noreply@azazie.com');
+        $fileDate =  $this->currentDate . ".xls";
+        $fileDir = "/var/log/cronjob/crawlerSummary/";
+        if(!is_dir($fileDir)){
+            mkdir($fileDir, 0777, true);
+            chmod($fileDir, 0777);
+        }
+        $filePath = $fileDir . $fileDate;
+        file_put_contents("{$fileDir}" . $fileDate, $html);
+        $cmd = "sudo /usr/local/bin/sendEmail -f 'noreply@azazie.com' -u 'Search Ads Report' -t 'zsdai@i9i8.com,ycwu@i9i8.com,jchu@i9i8.com' -a '{$filePath}' -m '数据如下'";
+        $r = `$cmd`;print_r($r);
+//        send_mail($this->email_reciever, $html, '', 'noreply@azazie.com');
     }
 
     function setDetailData(){
-        $startDate = date("Y-m-d");
-        $endDate = date("Y-m-d", strtotime("+1 day"));
+        $startDate = $this->currentDate;
+        $endDate = date("Y-m-d", strtotime("+1 day",strtotime($this->currentDate)));
         $detailSql = "
             select weight, hour, keyword, type
             from azazie.ads_report_record
@@ -378,8 +395,8 @@ class Cron_AdsCrawler_Controller
     }
 
     function setDailyAndScoreData(){
-        $endDate = date("Y-m-d", strtotime("+1 day"));
-        $startDate = date("Y-m-d", strtotime("-29 day"));
+        $endDate = date("Y-m-d", strtotime("+1 day",strtotime($this->currentDate)));
+        $startDate = date("Y-m-d", strtotime("-29 day",strtotime($this->currentDate)));
         $dailySql = "
             select 
                 keyword, type, date_format(create_time,'%Y-%m-%d') as day, 
