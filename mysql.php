@@ -25,7 +25,8 @@ class Mysql
 
     public function query($sql)
     {
-        mysql_query($sql);
+        $res = mysql_query($sql);
+        return $res;
     }
 
     function getAll($sql, $result_type = MYSQL_ASSOC)

@@ -941,15 +941,17 @@ class Cron_AdsCrawler_Controller
         }
 
         $value_sql = substr($value_sql, 0, -1);
-
         $insert_sql .= $value_sql;
         $res = $this->dbhw->query($insert_sql);
         if(!$res){
+            $try_times = 0;
             do{
                 print_r($this->dbhw->error());
                 $this->dbhw->connect();
-            }while(!($this->dbhw->query($insert_sql)));
+                $try_times ++;
+            }while(!($this->dbhw->query($insert_sql)) && $try_times < 20);
         }else{
+            print_r($insert_sql);
             echo "数据插入成功~~~";
         }
     }
