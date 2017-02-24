@@ -339,6 +339,8 @@ class Cron_AdsCrawler_Controller
   	     $this->summaryAction();
         }elseif($this->crawlerType == 'bing'){
             $this->crawlerBingData();
+ $this->summaryAction();
+
         }
         echo "----------开始插入记录------------" . PHP_EOL;
         $this->recordHourData();
