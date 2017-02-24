@@ -1042,38 +1042,39 @@ class Cron_AdsCrawler_Controller
             //以下是通过分析获取当前hour对应的searchAds和pla的pc权重
             if ($pcResponse['http_code'] == 200) {
                 $psHtml = str_get_html($pcContent);
-
-                //searchAds如果已经azazie广告，则不再对content进行分析
-                if (!$pcSearchAdsFound && !$adsFound) {
-                    foreach ($psHtml->find('.ads-visurl cite') as $candidateIndex => $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $adsPcTotal++;
-                        echo $text . PHP_EOL;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->searchAds_PC_Data[$index]['weight'] = $candidateIndex + 1;
-                            $pcSearchAdsFound = true;
-                            break;
+                if(!empty($psHtml)){
+                    //searchAds如果已经azazie广告，则不再对content进行分析
+                    if (!$pcSearchAdsFound && !$adsFound) {
+                        foreach ($psHtml->find('.ads-visurl cite') as $candidateIndex => $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $adsPcTotal++;
+                            echo $text . PHP_EOL;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->searchAds_PC_Data[$index]['weight'] = $candidateIndex + 1;
+                                $pcSearchAdsFound = true;
+                                break;
+                            }
                         }
                     }
-                }
 
-                //pla数据
-                if(!$plaFound){
-                    foreach ($psHtml->find('._Aad') as $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $plaPcTotal++;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->pla_PC_Data[$index]['weight']++;
+                    //pla数据
+                    if(!$plaFound){
+                        foreach ($psHtml->find('._Aad') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaPcTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_PC_Data[$index]['weight']++;
+                            }
                         }
-                    }
-                    foreach ($psHtml->find('._jym') as $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $plaPcTotal++;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->pla_PC_Data[$index]['weight']++;
+                        foreach ($psHtml->find('._jym') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaPcTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_PC_Data[$index]['weight']++;
+                            }
                         }
                     }
                 }
@@ -1112,29 +1113,31 @@ class Cron_AdsCrawler_Controller
             if ($mbResponse['http_code'] == 200) {
                 $mbHtml = str_get_html($mbContent);
 
-                //searchAds如果已经azazie广告，则不再对content进行分析
-                if (!$mbSearchAdsFound && !$adsFound) {
-                    foreach ($mbHtml->find('.ads-visurl cite') as $candidateIndex => $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $adsMbTotal++;
-                        echo $text . PHP_EOL;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->searchAds_MB_Data[$index]['weight'] = $candidateIndex + 1;
-                            $mbSearchAdsFound = true;
-                            break;
+                if(!empty($mbHtml)){
+                    //searchAds如果已经azazie广告，则不再对content进行分析
+                    if (!$mbSearchAdsFound && !$adsFound) {
+                        foreach ($mbHtml->find('.ads-visurl cite') as $candidateIndex => $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $adsMbTotal++;
+                            echo $text . PHP_EOL;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->searchAds_MB_Data[$index]['weight'] = $candidateIndex + 1;
+                                $mbSearchAdsFound = true;
+                                break;
+                            }
                         }
                     }
-                }
 
-                //pla数据
-                if(!$plaFound){
-                    foreach ($mbHtml->find('._FLg') as $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $plaMbTotal++;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->pla_MB_Data[$index]['weight']++;
+                    //pla数据
+                    if(!$plaFound){
+                        foreach ($mbHtml->find('._FLg') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaMbTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_MB_Data[$index]['weight']++;
+                            }
                         }
                     }
                 }
@@ -1170,22 +1173,10 @@ class Cron_AdsCrawler_Controller
             //以下是通过分析获取当前hour对应的bingAds和pla的pc权重
             if ($pcResponse['http_code'] == 200) {
                 $psHtml = str_get_html($pcContent);
-                //searchAds如果已经azazie广告，则不再对content进行分析
-                if (!$pcBingAdsFound) {
-                    foreach ($psHtml->find('#b_results .b_ad:not(".b_adBottom") .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $adsPcTotal++;
-                        echo $text . PHP_EOL;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->bing_PC_Data[$index]['weight'] = $candidateIndex + 1;
-                            $pcBingAdsFound = true;
-                            break 2;
-                        }
-                    }
-
-                    if(!$pcBingAdsFound){
-                        foreach ($psHtml->find('#b_context .b_ad .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
+                if(!empty($psHtml)){
+                    //searchAds如果已经azazie广告，则不再对content进行分析
+                    if (!$pcBingAdsFound) {
+                        foreach ($psHtml->find('#b_results .b_ad:not(".b_adBottom") .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
                             $text = $candidateElement->innertext;
                             $adsPcTotal++;
                             echo $text . PHP_EOL;
@@ -1196,18 +1187,32 @@ class Cron_AdsCrawler_Controller
                                 break 2;
                             }
                         }
-                    }
 
-                    if(!$pcBingAdsFound){
-                        foreach ($psHtml->find('#b_results .b_adBottom .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
-                            $text = $candidateElement->innertext;
-                            $adsPcTotal++;
-                            echo $text . PHP_EOL;
-                            if (!empty($text) && stripos($text, 'azazie') !== false) {
-                                //这里candidateIndex是否能代表出现的位置
-                                $this->bing_PC_Data[$index]['weight'] = $candidateIndex + 1;
-                                $pcBingAdsFound = true;
-                                break 2;
+                        if(!$pcBingAdsFound){
+                            foreach ($psHtml->find('#b_context .b_ad .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
+                                $text = $candidateElement->innertext;
+                                $adsPcTotal++;
+                                echo $text . PHP_EOL;
+                                if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                    //这里candidateIndex是否能代表出现的位置
+                                    $this->bing_PC_Data[$index]['weight'] = $candidateIndex + 1;
+                                    $pcBingAdsFound = true;
+                                    break 2;
+                                }
+                            }
+                        }
+
+                        if(!$pcBingAdsFound){
+                            foreach ($psHtml->find('#b_results .b_adBottom .sb_adTA .b_caption .b_attribution cite') as $candidateIndex => $candidateElement) {
+                                $text = $candidateElement->innertext;
+                                $adsPcTotal++;
+                                echo $text . PHP_EOL;
+                                if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                    //这里candidateIndex是否能代表出现的位置
+                                    $this->bing_PC_Data[$index]['weight'] = $candidateIndex + 1;
+                                    $pcBingAdsFound = true;
+                                    break 2;
+                                }
                             }
                         }
                     }
@@ -1242,18 +1247,19 @@ class Cron_AdsCrawler_Controller
             //以下是通过分析获取当前hour对应的bingAds和pla的mb权重
             if ($mbResponse['http_code'] == 200) {
                 $mbHtml = str_get_html($mbContent);
-
-                //searchAds如果已经azazie广告，则不再对content进行分析
-                if (!$mbBingAdsFound) {
-                    foreach ($mbHtml->find('.ad_sc .b_attribution cite') as $candidateIndex => $candidateElement) {
-                        $text = $candidateElement->innertext;
-                        $adsMbTotal++;
-                        echo $text . PHP_EOL;
-                        if (!empty($text) && stripos($text, 'azazie') !== false) {
-                            //这里candidateIndex是否能代表出现的位置
-                            $this->bing_MB_Data[$index]['weight'] = $candidateIndex + 1;
-                            $mbBingAdsFound = true;
-                            break 2;
+                if(!empty($mbHtml)){
+                    //searchAds如果已经azazie广告，则不再对content进行分析
+                    if (!$mbBingAdsFound) {
+                        foreach ($mbHtml->find('.ad_sc .b_attribution cite') as $candidateIndex => $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $adsMbTotal++;
+                            echo $text . PHP_EOL;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->bing_MB_Data[$index]['weight'] = $candidateIndex + 1;
+                                $mbBingAdsFound = true;
+                                break 2;
+                            }
                         }
                     }
                 }
