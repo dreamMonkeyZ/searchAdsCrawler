@@ -6,9 +6,9 @@
  *
  * 命令行: sudo php adsCrawler.php summary
  */
-require_once 'simple_html_dom.php';
-require_once 'random_userAgent.php';
-require_once 'mysql.php';
+require_once '/var/www/searchAdsCrawler/simple_html_dom.php';
+require_once '/var/www/searchAdsCrawler/random_userAgent.php';
+require_once '/var/www/searchAdsCrawler/mysql.php';
 
 class Cron_AdsCrawler_Controller
 {
@@ -339,8 +339,6 @@ class Cron_AdsCrawler_Controller
   	     $this->summaryAction();
         }elseif($this->crawlerType == 'bing'){
             $this->crawlerBingData();
- $this->summaryAction();
-
         }
         echo "----------开始插入记录------------" . PHP_EOL;
         $this->recordHourData();
