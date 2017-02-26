@@ -1070,6 +1070,16 @@ class Cron_AdsCrawler_Controller
                                 $this->pla_PC_Data[$index]['weight']++;
                             }
                         }
+
+                        foreach ($psHtml->find('.pla-unit .pla-unit-container ._Z5 ._mC .rhsl4') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaPcTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_PC_Data[$index]['weight']++;
+                            }
+                        }
+
                         foreach ($psHtml->find('._jym') as $candidateElement) {
                             $text = $candidateElement->innertext;
                             $plaPcTotal++;
@@ -1134,6 +1144,15 @@ class Cron_AdsCrawler_Controller
                     //pla数据
                     if(!$plaFound){
                         foreach ($mbHtml->find('._FLg') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaMbTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_MB_Data[$index]['weight']++;
+                            }
+                        }
+
+                        foreach ($mbHtml->find('._YDe ._KBh .Jyk') as $candidateElement) {
                             $text = $candidateElement->innertext;
                             $plaMbTotal++;
                             if (!empty($text) && stripos($text, 'azazie') !== false) {
