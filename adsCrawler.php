@@ -963,7 +963,7 @@ class Cron_AdsCrawler_Controller
     {
         echo "{$searchUrl}" . PHP_EOL;
         if($this->googleCount % 51 == 50){
-            $this->sleepCrawler(1800);
+            $this->sleepCrawler(2700);
         }
         $session = curl_init($searchUrl);
 
