@@ -336,12 +336,14 @@ class Cron_AdsCrawler_Controller
         echo "脚本start，时间：" . date('Y-m-d H:i:s') . ", 小时 ：{$this->hour}" . PHP_EOL;
         if($this->crawlerType == 'google'){
             $this->crawlerGoogleData();
-  	     $this->summaryAction();
         }elseif($this->crawlerType == 'bing'){
             $this->crawlerBingData();
         }
         echo "----------开始插入记录------------" . PHP_EOL;
         $this->recordHourData();
+	if($this->crawlerType == 'google'){
+	    $this->summaryAction();
+	}
         echo "脚本end，时间：" . date('Y-m-d H:i:s') . ", 小时 ：{$this->hour}" . PHP_EOL;
     }
 
