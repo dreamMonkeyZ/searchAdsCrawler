@@ -25,7 +25,7 @@ class Mysql
 
     public function query($sql)
     {
-        $res = mysql_query($sql);
+        $res = mysql_query($sql, $this->conn);
         return $res;
     }
 
@@ -51,6 +51,13 @@ class Mysql
 
     public function error(){
         return mysql_error($this->conn);
+    }
+
+    public function ping(){
+        if(!mysql_ping($this->conn)){
+            mysql_close($this->conn); //注意：一定要先执行数据库关闭，这是关键
+            $this->connect();
+        }
     }
 }
 
