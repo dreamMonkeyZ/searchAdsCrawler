@@ -1148,7 +1148,7 @@ class Cron_AdsCrawler_Controller
                             }
                         }
 
-                        foreach ($mbHtml->find('._YDe ._KBh .Jyk') as $candidateElement) {
+                        foreach ($mbHtml->find('._epn ._rJo ._krn') as $candidateElement) {
                             $text = $candidateElement->innertext;
                             $plaMbTotal++;
                             if (!empty($text) && stripos($text, 'azazie') !== false) {
