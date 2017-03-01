@@ -134,10 +134,10 @@ class Cron_AdsCrawler_Controller
 
         //pc和mb的useragent不同，curl需要不同的设置
         $this->optArrayPC = array(
-            CURLOPT_HTTPHEADER => array('User-Agent:' . random_user_agent('pc')),
+            CURLOPT_HTTPHEADER => array('User-Agent:' . random_user_agent('pc'), 'Accept-Language: q=1.0, en-US;'),
         );
         $this->optArrayMB = array(
-            CURLOPT_HTTPHEADER => array('User-Agent:' . random_user_agent('mb')),
+            CURLOPT_HTTPHEADER => array('User-Agent:' . random_user_agent('mb'), 'Accept-Language: q=1.0, en-US;'),
         );
 
         foreach ($this->keywords as $index => $keyword) {
@@ -1140,6 +1140,15 @@ class Cron_AdsCrawler_Controller
                     //pla数据
                     if(!$plaFound){
                         foreach ($mbHtml->find('._FLg') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaMbTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_MB_Data[$index]['weight']++;
+                            }
+                        }
+
+                        foreach ($mbHtml->find('._YDe ._KBh .Jyk') as $candidateElement) {
                             $text = $candidateElement->innertext;
                             $plaMbTotal++;
                             if (!empty($text) && stripos($text, 'azazie') !== false) {
