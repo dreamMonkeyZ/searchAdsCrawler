@@ -1067,6 +1067,15 @@ class Cron_AdsCrawler_Controller
                             }
                         }
 
+                        foreach ($psHtml->find('._cf cite') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaPcTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_PC_Data[$index]['weight']++;
+                            }
+                        }
+
                         foreach ($psHtml->find('.pla-unit .pla-unit-container ._Z5 ._mC .rhsl4') as $candidateElement) {
                             $text = $candidateElement->innertext;
                             $plaPcTotal++;
@@ -1110,7 +1119,7 @@ class Cron_AdsCrawler_Controller
             list($mbResponse, $mbContent) = $mbRes;
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/google/mb/";
+            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/google/mb/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
@@ -1187,7 +1196,7 @@ class Cron_AdsCrawler_Controller
             $pcRes = $this->getCurlData($searchUrl, $this->optArrayPC);
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/bing/pc";
+            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/bing/pc";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
@@ -1260,7 +1269,7 @@ class Cron_AdsCrawler_Controller
             $mbRes = $this->getCurlData($searchUrl, $this->optArrayMB);
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/bing/mb/";
+            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/bing/mb/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
