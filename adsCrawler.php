@@ -1029,7 +1029,7 @@ class Cron_AdsCrawler_Controller
             list($pcResponse, $pcContent) = $pcRes;
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/";
+            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/google/pc/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
@@ -1110,7 +1110,7 @@ class Cron_AdsCrawler_Controller
             list($mbResponse, $mbContent) = $mbRes;
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/";
+            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/google/mb/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
@@ -1187,7 +1187,7 @@ class Cron_AdsCrawler_Controller
             $pcRes = $this->getCurlData($searchUrl, $this->optArrayPC);
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/";
+            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/bing/pc";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
@@ -1260,7 +1260,7 @@ class Cron_AdsCrawler_Controller
             $mbRes = $this->getCurlData($searchUrl, $this->optArrayMB);
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/";
+            $fileDir = "/var/log/cronjob/crawler/{$fileDate}/{$this->hour}/bing/mb/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
