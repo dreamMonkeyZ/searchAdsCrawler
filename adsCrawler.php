@@ -1196,7 +1196,7 @@ class Cron_AdsCrawler_Controller
             $pcRes = $this->getCurlData($searchUrl, $this->optArrayPC);
 
             $fileDate = date('Y-m-d');
-            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/bing/pc";
+            $fileDir = "/var/www/log/crawler/{$fileDate}/{$this->hour}/bing/pc/";
             if(!is_dir($fileDir)){
                 mkdir($fileDir, 0777, true);
                 chmod($fileDir, 0777);
