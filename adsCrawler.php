@@ -372,7 +372,8 @@ class Cron_AdsCrawler_Controller
         }
         $filePath = $fileDir . $fileDate;
         file_put_contents("{$fileDir}" . $fileDate, $html);
-        $cmd = "sudo /usr/local/bin/sendEmail -f 'noreply@azazie.com' -u 'Search Ads Report' -t 'zsdai@i9i8.com,ycwu@i9i8.com,jchu@i9i8.com' -a '{$filePath}' -m '数据如下'";
+        // $cmd = "sudo /usr/local/bin/sendEmail -f 'noreply@azazie.com' -u 'Search Ads Report' -t 'zsdai@i9i8.com,ycwu@i9i8.com,jchu@i9i8.com' -a '{$filePath}' -m '数据如下'";
+        $cmd =  "mutt -s 'searchAds data' -A " . $filePath . " jchu@i9i8.com,zsdai@i9i8.com < /dev/null";
         $r = `$cmd`;print_r($r);
 //        send_mail($this->email_reciever, $html, '', 'noreply@azazie.com');
     }
