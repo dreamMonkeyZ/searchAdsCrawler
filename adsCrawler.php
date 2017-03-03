@@ -1174,6 +1174,16 @@ class Cron_AdsCrawler_Controller
                                 $this->pla_MB_Data[$index]['weight']++;
                             }
                         }
+
+                        foreach ($mbHtml->find('.pla-unit cite') as $candidateElement) {
+                            $text = $candidateElement->innertext;
+                            $plaMbTotal++;
+                            if (!empty($text) && stripos($text, 'azazie') !== false) {
+                                //这里candidateIndex是否能代表出现的位置
+                                $this->pla_MB_Data[$index]['weight']++;
+                            }
+                        }
+
                     }
                 }
             } elseif ($mbResponse['http_code'] == 503) {
